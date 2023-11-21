@@ -1,6 +1,6 @@
 # Smart_Invest
 
-- Clone the project from github / when it's cloned the pull it from github
+- Clone the project from github / when it's cloned then pull it from github
 - create the virtuel environment with python -m venv .venv
 - start the virtuel environment with source .venv/bin/activate
 - install the requirements.txt with pip install -r requirements.txt
