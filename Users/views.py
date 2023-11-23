@@ -33,12 +33,14 @@ class UserListView(ListCreateAPIView):
     #queryset = User.objects.all()
     permission_classes = (IsAuthorOrReadOnly, )
     serializer_class = UserDetailView
-    def perform_create(self, serializer):
-        serializer.save(author = self.request.user)
+    
     def get_queryset(self):
         if self.request.user.is_superuser:
             return User.objects.all()
-        return User.objects.filter(author= self.request.user)
+        return User.objects.filter(id= self.request.user.id)
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 class UserDetailView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
