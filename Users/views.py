@@ -31,7 +31,7 @@ class TwitterConnect(SocialConnectView):
 
 class UserListView(ListCreateAPIView):
     #queryset = User.objects.all()
-    permission_classes = (IsAuthorOrReadOnly, )
+    #permission_classes = (IsAuthorOrReadOnly, )
     serializer_class = UserDetailView
     
     def get_queryset(self):
