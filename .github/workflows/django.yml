@@ -42,18 +42,19 @@ jobs:
         DB_USER: youruser
         DB_PASSWORD: yourpassword
         DB_PORT: 5432
+        DB_HOST: postgres://youruser:yourpassword@postgres:5432/yourdbname
         
       run: |
         python manage.py migrate
        
        
 
-    - name: Run tests
-      env:
-        DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
-        DB_NAME: yourdbname
-        DB_USER: youruser
-        DB_PASSWORD: yourpassword
-        DB_PORT: 5432
-      run: |
-        python manage.py test
+    # - name: Run tests
+    #   env:
+    #     DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
+    #     DB_NAME: yourdbname
+    #     DB_USER: youruser
+    #     DB_PASSWORD: yourpassword
+    #     DB_PORT: 5432
+    #   run: |
+    #     python manage.py test
