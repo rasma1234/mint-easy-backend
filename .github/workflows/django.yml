@@ -40,6 +40,10 @@ jobs:
         DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
       run: |
         python manage.py migrate
+      env: 
+        DB_Name: ${{ env.DB_NAME}}
+        DB_USER: ${{ env.DB_USER}}
+        DB_PASSWORD: ${{ env.DB_PASSWORD}}
 
     - name: Run tests
       env:
