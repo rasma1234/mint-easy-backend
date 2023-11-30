@@ -1,6 +1,6 @@
 name: Django CI
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   test:
@@ -38,9 +38,9 @@ jobs:
     - name: Run migrations
       env:
         DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
-        DB_Name: ${{ env.DB_NAME}}
-        DB_USER: ${{ env.DB_USER}}
-        DB_PASSWORD: ${{ env.DB_PASSWORD}}
+        DB_Name: yourdbname
+        DB_USER: youruser
+        DB_PASSWORD: yourpassword
       run: |
         python manage.py migrate
        
@@ -49,8 +49,8 @@ jobs:
     - name: Run tests
       env:
         DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
-        DB_Name: ${{ env.DB_NAME}}
-        DB_USER: ${{ env.DB_USER}}
-        DB_PASSWORD: ${{ env.DB_PASSWORD}}
+        DB_Name: yourdbname
+        DB_USER: youruser
+        DB_PASSWORD: yourpassword
       run: |
         python manage.py test
