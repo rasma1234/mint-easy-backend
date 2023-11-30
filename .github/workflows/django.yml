@@ -37,7 +37,7 @@ jobs:
 
     - name: Run migrations
       env:
-        DB_HOST: postgres://youruser:yourpassword@localhost:5432/yourdbname
+        DB_HOST: postgres://youruser:yourpassword@postgres:5432/yourdbname
         DB_NAME: yourdbname
         DB_USER: youruser
         DB_PASSWORD: yourpassword
@@ -50,7 +50,7 @@ jobs:
 
     - name: Run tests
       env:
-        DB_HOST: postgres://youruser:yourpassword@localhost:5432/yourdbname
+        DB_HOST: postgres://youruser:yourpassword@postgres:5432/yourdbname
         DB_NAME: yourdbname
         DB_USER: youruser
         DB_PASSWORD: yourpassword
