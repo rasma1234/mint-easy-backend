@@ -24,7 +24,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
+    - name: check postgresservicestatus
+      run: ps aux | grep postgres    
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
