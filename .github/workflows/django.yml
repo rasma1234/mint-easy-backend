@@ -52,10 +52,11 @@ jobs:
 
     - name: Run tests
       env:
-        DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
+        DATABASE_URL: postgres://youruser:yourpassword@127.0.0.1:5432/yourdbname
         DB_NAME: yourdbname
         DB_USER: youruser
         DB_PASSWORD: yourpassword
         DB_PORT: 5432
+        DB_HOST: localhost
       run: |
         python manage.py test
