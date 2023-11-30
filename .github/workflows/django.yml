@@ -38,7 +38,7 @@ jobs:
     - name: Run migrations
       env:
         DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
-        DB_Name: yourdbname
+        DB_NAME: yourdbname
         DB_USER: youruser
         DB_PASSWORD: yourpassword
       run: |
@@ -49,7 +49,7 @@ jobs:
     - name: Run tests
       env:
         DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
-        DB_Name: yourdbname
+        DB_NAME: yourdbname
         DB_USER: youruser
         DB_PASSWORD: yourpassword
       run: |
