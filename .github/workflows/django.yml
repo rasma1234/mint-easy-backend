@@ -43,7 +43,7 @@ jobs:
         DB_USER: youruser
         DB_PASSWORD: yourpassword
         DB_PORT: 5432
-        DB_HOST: postgres://youruser:yourpassword@127.0.0.1:5432/yourdbname
+        DB_HOST: postgres
         
       run: |
         python manage.py migrate
