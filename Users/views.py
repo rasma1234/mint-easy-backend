@@ -15,7 +15,7 @@ from .serializers import UserListView, UserDetailView
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
-#from .permissions import IsAuthorOrReadOnly
+#from .permissions import CustomLoginSerializer
 
 
 class GoogleLogin(SocialLoginView):
@@ -45,3 +45,29 @@ class UserListView(ListCreateAPIView):
 class UserDetailView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailView
+
+from dj_rest_auth.views import LoginView
+from rest_framework.response import Response
+from dj_rest_auth.registration.views import SocialLoginView
+from rest_framework.authtoken.models import Token
+
+class CustomLoginView(LoginView):
+    def post(self, request, *args, **kwargs):
+        
+        response = super().post(request, *args, **kwargs)
+
+        user = self.user
+
+        if not user.emailaddress_set.filter(verified=True).exists():
+            # Email not verified, you can customize the response accordingly
+            response.data['detail'] = 'Email not verified.'
+            response.status_code = 400  # Bad Request or any other appropriate status code
+            return response
+
+        token, created = Token.objects.get_or_create(user=user)
+
+        response.data['token'] = token.key
+
+        return response
+
+

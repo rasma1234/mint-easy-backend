@@ -49,11 +49,13 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     'allauth.socialaccount.providers.google',
+    "corsheaders",  # frontend
     # local
     'Users',
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # frontend
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -173,3 +175,10 @@ EMAIL_HOST_PASSWORD = 'byts glel hfsp grqe'
 # Default sender address for emails
 DEFAULT_FROM_EMAIL = 'dciprojectx@gmail.com'
 SERVER_EMAIL = 'dciprojectx@gmail.com'
+
+# to add the frontend url to the CORS_ALLOWED_ORIGINS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+CORS_ALLOW_CREDENTIALS = True # to allow the frontend to send the cookies to the backend
