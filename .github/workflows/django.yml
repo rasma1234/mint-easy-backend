@@ -1,6 +1,6 @@
 name: Django CI
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   test:
@@ -24,7 +24,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
+    - name: check postgresservicestatus
+      run: ps aux | grep postgres    
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -37,16 +38,25 @@ jobs:
 
     - name: Run migrations
       env:
-        DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
+        DATABASE_URL: postgres://youruser:yourpassword@127.0.0.1:5432/yourdbname
+        DB_NAME: yourdbname
+        DB_USER: youruser
+        DB_PASSWORD: yourpassword
+        DB_PORT: 5432
+        DB_HOST: localhost
+        
       run: |
         python manage.py migrate
-      env: 
-        DB_Name: ${{ env.DB_NAME}}
-        DB_USER: ${{ env.DB_USER}}
-        DB_PASSWORD: ${{ env.DB_PASSWORD}}
+       
+       
 
     - name: Run tests
       env:
-        DATABASE_URL: postgres://youruser:yourpassword@localhost:5432/yourdbname
+        DATABASE_URL: postgres://youruser:yourpassword@127.0.0.1:5432/yourdbname
+        DB_NAME: yourdbname
+        DB_USER: youruser
+        DB_PASSWORD: yourpassword
+        DB_PORT: 5432
+        DB_HOST: localhost
       run: |
         python manage.py test
