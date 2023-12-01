@@ -15,7 +15,7 @@ from .serializers import UserListView, UserDetailView
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
-from .permissions import IsAuthorOrReadOnly
+#from .permissions import IsAuthorOrReadOnly
 
 
 class GoogleLogin(SocialLoginView):
