@@ -64,9 +64,9 @@ class CustomLoginView(LoginView):
             response.status_code = 400  # Bad Request or any other appropriate status code
             return response
 
-        token, created = Token.objects.get_or_create(user=user)
+        # token, created = Token.objects.get_or_create(user=user)
 
-        response.data['token'] = token.key
+        # response.data['token'] = token.key
 
         return response
 
