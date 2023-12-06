@@ -166,15 +166,15 @@ SITE_ID = 1
 # ACCOUNT_EMAIL_VERIFICATION_SUBJECT = 'Activate your account.'
 
 # SMTP settings (example for Gmail, replace with your email provider's settings)
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.ionos.de'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'dciprojectx@gmail.com'
-EMAIL_HOST_PASSWORD = 'byts glel hfsp grqe'
+EMAIL_HOST_USER = 'info@mint-easy.de'
+EMAIL_HOST_PASSWORD = 'ProjectX123456789#+'
 
 # Default sender address for emails
-DEFAULT_FROM_EMAIL = 'dciprojectx@gmail.com'
-SERVER_EMAIL = 'dciprojectx@gmail.com'
+DEFAULT_FROM_EMAIL = 'info@mint-easy.de'
+SERVER_EMAIL = 'info@mint-easy.de'
 
 # to add the frontend url to the CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [

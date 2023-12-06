@@ -59,9 +59,8 @@ class CustomLoginView(LoginView):
         user = self.user
 
         if not user.emailaddress_set.filter(verified=True).exists():
-            # Email not verified, you can customize the response accordingly
             response.data['detail'] = 'Email not verified.'
-            response.status_code = 400  # Bad Request or any other appropriate status code
+            response.status_code = 400 
             return response
 
         # token, created = Token.objects.get_or_create(user=user)
