@@ -16,7 +16,7 @@ from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 #from .permissions import CustomLoginSerializer
-
+from django.views.decorators.csrf import csrf_protect
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
@@ -52,6 +52,7 @@ from dj_rest_auth.registration.views import SocialLoginView
 from rest_framework.authtoken.models import Token
 
 class CustomLoginView(LoginView):
+    @csrf_protect
     def post(self, request, *args, **kwargs):
         
         response = super().post(request, *args, **kwargs)
