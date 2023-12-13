@@ -69,6 +69,6 @@ jobs:
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: 'Django CI Build Status'
-        to: 'recipient@example.com'
-        from: 'sender@example.com'
+        to: 'info@mint-easy.de'
+        from: 'info@mint-easy.de'
         body: 'Django CI build completed successfully!'        
