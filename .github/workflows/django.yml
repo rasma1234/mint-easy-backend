@@ -60,15 +60,19 @@ jobs:
         DB_HOST: localhost
       run: |
         python manage.py test
-  
     - name: Send Email Notification
-      uses: dawidd6/action-send-mail@v2
+      uses: softprops/action-gh-release@v1
       with:
-        server_address: ${{ secrets.SMTP_SERVER }}
-        server_port: ${{ secrets.SMTP_PORT }}
-        username: ${{ secrets.SMTP_USERNAME }}
-        password: ${{ secrets.SMTP_PASSWORD }}
-        subject: 'Django CI Build Status'
-        to: 'info@mint-easy.de'
-        from: 'info@mint-easy.de'
-        body: 'Django CI build completed successfully!'        
+        files: /dev/null
+        draft: false
+        prerelease: false
+        tag_name: ${{ github.sha }}
+        name: 'Django CI Build Status'
+        body: 'Django CI build completed successfully!'
+        target_commitish: ${{ github.sha }}
+        email: 'info@mint-easy.de'
+        name: 'info@mint-easy.de'
+      env:
+        pythonLocation: /opt/hostedtoolcache/Python/3.8.18/x64
+        LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.8.18/x64/lib
+
