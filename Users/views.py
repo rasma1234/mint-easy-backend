@@ -17,6 +17,22 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 #from .permissions import CustomLoginSerializer
 from django.views.decorators.csrf import csrf_protect
+from dj_rest_auth.views import LoginView
+from rest_framework.response import Response
+from dj_rest_auth.registration.views import SocialLoginView
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import logout
+from dj_rest_auth.views import LoginView
+from rest_framework.response import Response
+from rest_framework import status
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+from django.core.mail import send_mail
+from dj_rest_auth.registration.views import RegisterView
+from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
@@ -46,28 +62,39 @@ class UserDetailView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailView
 
-from dj_rest_auth.views import LoginView
-from rest_framework.response import Response
-from dj_rest_auth.registration.views import SocialLoginView
-from rest_framework.authtoken.models import Token
 
+@method_decorator(csrf_protect, name='dispatch')
 class CustomLoginView(LoginView):
-    @csrf_protect
     def post(self, request, *args, **kwargs):
-        
         response = super().post(request, *args, **kwargs)
-
-        user = self.user
-
+        user = request.user
         if not user.emailaddress_set.filter(verified=True).exists():
-            response.data['detail'] = 'Email not verified.'
-            response.status_code = 400 
-            return response
-
-        # token, created = Token.objects.get_or_create(user=user)
-
-        # response.data['token'] = token.key
+            logout(request)
+            return Response(
+                {'detail': 'Email not verified.'},
+                status=status.HTTP_403_FORBIDDEN  # 403 Forbidden
+            )
 
         return response
 
 
+@method_decorator(csrf_protect, name='dispatch')
+class CustomRegisterView(RegisterView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+
+        # Überprüfe, ob die Response gültig ist
+        if response is not None and hasattr(response, 'data'):
+            send_mail(
+                'Welcome to mint-easy',
+                'Thank you fo registration!',
+                'info@mint-easy.de',
+                [request.data.get('email')],
+                fail_silently=False,
+            )
+
+            custom_data = {'message': 'The User ist registered and the E-Mail is sended.'}
+            response.data = response.data or {}
+            response.data.update(custom_data)
+
+        return response

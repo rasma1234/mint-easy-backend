@@ -166,11 +166,11 @@ SITE_ID = 1
 # ACCOUNT_EMAIL_VERIFICATION_SUBJECT = 'Activate your account.'
 
 # SMTP settings (example for Gmail, replace with your email provider's settings)
-EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST = config("EMAIL_HOST", default='smtp.test.de')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'info@mint-easy.de'
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default='test')
 # Default sender address for emails
 DEFAULT_FROM_EMAIL = 'info@mint-easy.de'
 SERVER_EMAIL = 'info@mint-easy.de'
