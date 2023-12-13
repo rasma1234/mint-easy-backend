@@ -166,7 +166,7 @@ SITE_ID = 1
 # ACCOUNT_EMAIL_VERIFICATION_SUBJECT = 'Activate your account.'
 
 # SMTP settings (example for Gmail, replace with your email provider's settings)
-EMAIL_HOST = config("EMAIL_HOST", default='smtp.test.de')
+EMAIL_HOST = config("EMAIL_HOST", default='smtp.ionos.de')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'info@mint-easy.de'
