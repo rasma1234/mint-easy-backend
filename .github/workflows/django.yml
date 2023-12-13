@@ -60,17 +60,7 @@ jobs:
         DB_HOST: localhost
       run: |
         python manage.py test
-    - name: Send Email Notification
-      uses: dawidd6/action-send-mail@v2
-      with:
-        server_address: ${{ secrets.SMTP_SERVER }}
-        server_port: ${{ secrets.SMTP_PORT }}
-        username: ${{ secrets.SMTP_USERNAME }}
-        password: ${{ secrets.SMTP_PASSWORD }}
-        subject: 'Django CI Build Status'
-        to: 'recipient@example.com'
-        from: 'sender@example.com'
-        body: 'Django CI build completed successfully!'      
+   
 
 
 
