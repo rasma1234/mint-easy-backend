@@ -61,15 +61,16 @@ jobs:
       run: |
         python manage.py test
     - name: Send Email Notification
-      uses: softprops/email@v2
+      uses: dawidd6/action-send-mail@v2
       with:
-        to: 'info@mint-easy.de'
-        from: 'info@mint-easy.de'
-        host: ${{ secrets.SMTP_SERVER }}
+        server_address: ${{ secrets.SMTP_SERVER }}
+        server_port: ${{ secrets.SMTP_PORT }}
         username: ${{ secrets.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: 'Django CI Build Status'
-        text: 'Django CI build completed successfully!'
+        to: 'recipient@example.com'
+        from: 'sender@example.com'
+        body: 'Django CI build completed successfully!'      
 
 
 
