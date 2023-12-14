@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "corsheaders",  # frontend
     # local
     'Users',
+    'Data',
 ]
 
 MIDDLEWARE = [
