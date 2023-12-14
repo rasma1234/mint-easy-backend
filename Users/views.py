@@ -32,7 +32,13 @@ from dj_rest_auth.registration.views import RegisterView
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+from django.http import JsonResponse  # new
+from django.middleware.csrf import get_token  # new
 
+def send_csrf(request):
+    return JsonResponse({"csrfToken": get_token(request)})  
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
@@ -93,56 +99,10 @@ class CustomRegisterView(RegisterView):
                 fail_silently=False,
             )
 
-            custom_data = {'message': 'The User ist registered and the E-Mail is sended.'}
+            custom_data = {"message": "Please verify your email address."}
             response.data = response.data or {}
             response.data.update(custom_data)
+            response.status_code = status.HTTP_200_OK
 
         return response
 
-
-import requests
-from datetime import datetime
-from django.db import models
-
-# Assuming ForexData is your Django model
-#from your_app.models import ForexData
-
-def fetch_forex_data(api_token):
-    api_endpoint = 'YOUR_API_ENDPOINT'
-    
-    try:
-        # Set up the headers with the Bearer token
-        headers = {
-            'Authorization': f'Bearer {api_token}',
-            'Content-Type': 'application/json',
-        }
-
-        # Make a GET request to the API with headers
-        response = requests.get(api_endpoint, headers=headers)
-        response.raise_for_status()
-
-        forex_data_list = response.json()
-
-        for forex_data in forex_data_list:
-            ForexData.objects.create(
-                symbol=forex_data['symbol'],
-                datetime=datetime.strptime(forex_data['datetime'], '%Y-%m-%dT%H:%M:%SZ'),
-                current_price=forex_data['current_price'],
-                open_price=forex_data['open_price'],
-                close_price=forex_data['close_price'],
-                high_price=forex_data['high_price'],
-                low_price=forex_data['low_price'],
-                percent_change=forex_data['percent_change'],
-            )
-
-        print('Data successfully fetched and stored in the database.')
-
-    except requests.RequestException as e:
-        print(f'Error fetching data from the API: {e}')
-
-if __name__ == '__main__':
-    # Replace 'YOUR_API_ENDPOINT' and 'YOUR_API_TOKEN' with your actual API endpoint and token
-    api_endpoint = 'YOUR_API_ENDPOINT'
-    api_token = 'YOUR_API_TOKEN'
-
-    fetch_forex_data(api_token)
