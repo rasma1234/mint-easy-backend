@@ -69,7 +69,7 @@ class UserDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = UserDetailView
 
 
-@method_decorator(csrf_protect, name='dispatch')
+#@method_decorator(csrf_protect, name='dispatch')
 class CustomLoginView(LoginView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -84,7 +84,7 @@ class CustomLoginView(LoginView):
         return response
 
 
-@method_decorator(csrf_protect, name='dispatch')
+#@method_decorator(csrf_protect, name='dispatch')
 class CustomRegisterView(RegisterView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
