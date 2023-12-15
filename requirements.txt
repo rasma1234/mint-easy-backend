@@ -47,3 +47,9 @@ tzdata==2023.3
 urllib3==2.1.0
 vine==5.1.0
 wcwidth==0.2.12
+# new additions(delete if thats causing issues)
+# sudo service rabbitmq-server start
+# sudo systemctl enable rabbitmq-server
+# sudo service rabbitmq-server status
+# sudo service rabbitmq-server restart
+# celery -A your_project_name worker --loglevel=info
