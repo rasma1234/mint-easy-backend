@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    #'django.contrib.sites',
     # 3 rd Party
     'rest_framework',
     "rest_framework.authtoken",
@@ -47,11 +49,16 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
+    'allauth.socialaccount.providers.google',
+    'django_celery_beat',
+    "corsheaders",  # frontend
     # local
     'Users',
+    'Data',
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # frontend
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -151,5 +158,39 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ]
 }
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 SITE_ID = 1
+
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+# ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'
+# ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+# ACCOUNT_EMAIL_CONFIRMATION_URL = 'account_confirm_email'
+# ACCOUNT_EMAIL_VERIFICATION_SUBJECT = 'Activate your account.'
+
+# SMTP settings (example for Gmail, replace with your email provider's settings)
+EMAIL_HOST = config("EMAIL_HOST", default='smtp.ionos.de')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'info@mint-easy.de'
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default='test')
+# Default sender address for emails
+DEFAULT_FROM_EMAIL = 'info@mint-easy.de'
+SERVER_EMAIL = 'info@mint-easy.de'
+
+# to add the frontend url to the CORS_ALLOWED_ORIGINS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+CORS_ALLOW_CREDENTIALS = True # to allow the frontend to send the cookies to the backend
+
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_IMPORTS = ('Data.tasks',)
+
