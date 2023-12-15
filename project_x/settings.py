@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o0hkfl-k5u0pjl1(+s*@m4&fscky1)b1j@_%@y8ibp7hb((1_p'
+SECRET_KEY = "django-insecure-o0hkfl-k5u0pjl1(+s*@m4&fscky1)b1j@_%@y8ibp7hb((1_p"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,61 +33,60 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django_extensions',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django_extensions",
     #'django.contrib.sites',
     # 3 rd Party
-    'rest_framework',
+    "rest_framework",
     "rest_framework.authtoken",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-    'allauth.socialaccount.providers.google',
+    "allauth.socialaccount.providers.google",
     "corsheaders",  # frontend
     # local
-    'Users',
-    'Data',
+    "Users",
+    "Data",
 ]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # frontend
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
-
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
-ROOT_URLCONF = 'project_x.urls'
+ROOT_URLCONF = "project_x.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'project_x.wsgi.application'
+WSGI_APPLICATION = "project_x.wsgi.application"
 
 
 # Database
@@ -110,16 +109,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -127,9 +126,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -139,15 +138,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-#AUTH_USER_MODEL = "accounts.CustomUser" 
+# AUTH_USER_MODEL = "accounts.CustomUser"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -155,7 +154,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-    ]
+    ],
 }
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 SITE_ID = 1
@@ -168,18 +167,34 @@ SITE_ID = 1
 # ACCOUNT_EMAIL_VERIFICATION_SUBJECT = 'Activate your account.'
 
 # SMTP settings (example for Gmail, replace with your email provider's settings)
-EMAIL_HOST = config("EMAIL_HOST", default='smtp.ionos.de')
+EMAIL_HOST = config("EMAIL_HOST", default="smtp.ionos.de")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'info@mint-easy.de'
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default='test')
+EMAIL_HOST_USER = "info@mint-easy.de"
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="test")
 # Default sender address for emails
-DEFAULT_FROM_EMAIL = 'info@mint-easy.de'
-SERVER_EMAIL = 'info@mint-easy.de'
+DEFAULT_FROM_EMAIL = "info@mint-easy.de"
+SERVER_EMAIL = "info@mint-easy.de"
 
 # to add the frontend url to the CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+from corsheaders.defaults import default_headers
 
-CORS_ALLOW_CREDENTIALS = True # to allow the frontend to send the cookies to the backend
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "X-CSRFToken"
+]  # to allow the frontend to send the cookies to the backend
+
+CSRF_COOKIE_NAME = (
+    "csrftoken"  # to allow the frontend to send the cookies to the backend
+)
+CSRF_COOKIE_HTTPONLY = False  # to allow the frontend to send the cookies to the backend
+CORS_EXPOSE_HEADERS = [
+    "Content-Type",
+    "X-CSRFToken",
+]  # to allow the frontend to send the cookies to the backend
+
+CORS_ALLOW_CREDENTIALS = (
+    True  # to allow the frontend to send the cookies to the backend
+)
