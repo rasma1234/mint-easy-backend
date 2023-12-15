@@ -26,7 +26,7 @@ from dj_rest_auth.views import LoginView
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect ,  ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from django.core.mail import send_mail
 from dj_rest_auth.registration.views import RegisterView
 from rest_framework.response import Response
@@ -71,9 +71,8 @@ class UserDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = UserDetailView
 
 
-@method_decorator(ensure_csrf_cookie, name="dispatch")
+# @method_decorator(csrf_protect, name="dispatch")
 class CustomLoginView(LoginView):
-    @method_decorator(csrf_protect)
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         user = request.user
@@ -87,7 +86,7 @@ class CustomLoginView(LoginView):
         return response
 
 
-#@method_decorator(csrf_protect, name="dispatch")
+# @method_decorator(csrf_protect, name="dispatch")
 class CustomRegisterView(RegisterView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
