@@ -1,13 +1,15 @@
-
 from django.test import TestCase
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User
 from rest_framework import status
+from django.urls import reverse
+from django.core import mail
+
 
 class SocialAuthViewsTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='test')
+        self.user = User.objects.create_user(username="testuser", password="test")
 
     # def test_google_login_view(self):
     #     response = self.client.post('dj-rest-auth/google/')
@@ -21,38 +23,57 @@ class SocialAuthViewsTest(TestCase):
     #     response = self.client.post('/accounts/twitter/connect/')
     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+
 class UserViewsTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='test')
+        self.user = User.objects.create_user(username="testuser", password="test")
 
     def test_user_list_view_authenticated(self):
         self.client.force_authenticate(user=self.user)
-        response = self.client.get('/users/')
+        response = self.client.get("/users/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_list_view_unauthenticated(self):
-        response = self.client.get('/users/')
+        response = self.client.get("/users/")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_user_detail_view_authenticated(self):
         self.client.force_authenticate(user=self.user)
-        response = self.client.get(f'/users/{self.user.id}/')
+        response = self.client.get(f"/users/{self.user.id}/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_detail_view_unauthenticated(self):
-        response = self.client.get(f'/users/{self.user.id}/')
+        response = self.client.get(f"/users/{self.user.id}/")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_user_creation_view_authenticated(self):
         self.client.force_authenticate(user=self.user)
-        data = {'username': 'newuser', 'password': 'newpassword'}
-        response = self.client.post('/users/', data)
+        data = {"username": "newuser", "password": "newpassword"}
+        response = self.client.post("/users/", data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_user_creation_view_unauthenticated(self):
-        data = {'username': 'newuser', 'password': 'newpassword'}
-        response = self.client.post('/users/', data)
+        data = {"username": "newuser", "password": "newpassword"}
+        response = self.client.post("/users/", data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
+class CustomResetPasswordViewTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(
+            username="testuser",
+            password="1234",
+            email="eltonvansoylent@gmail.com",
+        )
+
+        # login the user
+        self.client.login(username="testuser", password="1234")
+
+    def test_custom_password_reset_view(self):
+        data = {"email": "eltonvansoylent@gmail.com"}
+        response = self.client.post(reverse("dj-rest-auth/password/reset/"), data)
+        print(response)
+        self.assertEqual(len(mail.outbox), 1)
+        # self.assertEqual(response.status_code, 200)

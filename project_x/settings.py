@@ -91,7 +91,17 @@ WSGI_APPLICATION = "project_x.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# import sys
 
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    }
+
+else:
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -156,8 +166,21 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
+
+
+REST_AUTH = {
+    "PASSWORD_RESET_USE_SITES_DOMAIN": False,
+    "PASSWORD_RESET_CONFIRM_URL": "http://localhost:5173/{uid}/{token}",
+    "PASSWORD_RESET_EMAIL_CONFIRMATION": False,
+    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "PASSWORD_RESET_DOMAIN": "http://localhost:5173",
+    "PASSWORD_RESET_CONFIRM_HOST": "http://localhost:5173",
+}
+
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 SITE_ID = 1
+
 
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3

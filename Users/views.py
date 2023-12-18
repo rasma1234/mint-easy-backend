@@ -12,13 +12,14 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from allauth.account.models import EmailAddress
 from dj_rest_auth.views import UserDetailsView
 from .serializers import UserListView, UserDetailView
+
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 
+
 # from .permissions import CustomLoginSerializer
 from dj_rest_auth.views import LoginView
-from rest_framework.response import Response
 from dj_rest_auth.registration.views import SocialLoginView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import logout
@@ -109,4 +110,9 @@ class CustomRegisterView(RegisterView):
         return response
 
 
-#
+from rest_framework.response import Response
+from rest_framework import status
+
+
+
+
