@@ -17,6 +17,34 @@ app.conf.beat_schedule = {
         'task': 'Data.tasks.fetch_forex_data',
         'schedule': crontab(minute='*'),
     },
+    'fetch-forex-data1': {
+        'task': 'Data.tasks.fetch_forex_data1',
+        'schedule': crontab(minute='*'),
+    },
+    'fetch-forex-data2': {
+        'task': 'Data.tasks.fetch_forex_data2',
+        'schedule': crontab(minute='*'),
+    },
+    'fetch-forex-data3': {
+        'task': 'Data.tasks.fetch_forex_data3',
+        'schedule': crontab(minute='*'),
+    },   
+    'fetch-forex-data4': {
+        'task': 'Data.tasks.fetch_forex_data4',
+        'schedule': crontab(minute='*'),
+    },
+    'fetch-crypto-data': {
+        'task': 'Data.tasks.fetch_crypto_data',
+        'schedule': crontab(minute='*'),
+    },
+    'fetch-crypto-data1': {
+        'task': 'Data.tasks.fetch_crypto_data1',
+        'schedule': crontab(minute='*'),
+    },
+    'fetch-stock-data': {
+        'task': 'Data.tasks.fetch_stock_data',
+        'schedule': crontab(minute='*'),
+    },
 }
 
 app.conf.broker_connection_retry_on_startup = True
