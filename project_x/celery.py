@@ -41,11 +41,11 @@ app.conf.beat_schedule = {
         'task': 'Data.tasks.fetch_crypto_data1',
         'schedule': crontab(minute='*'),
     },
-    'fetch-stock-data': {
-        'task': 'Data.tasks.fetch_stock_data',
-        'schedule': crontab(minute='*'),
-    },
-}
+#     'fetch-stock-data': {
+#         'task': 'Data.tasks.fetch_stock_data',
+#         'schedule': crontab(minute='*'),
+#     },
+ }
 
 app.conf.broker_connection_retry_on_startup = True
 app.conf.beat_scheduler = 'celery.beat.PersistentScheduler'

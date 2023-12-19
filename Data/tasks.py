@@ -228,14 +228,14 @@ def fetch_crypto_data1(api_key='5607c990906143b4a804c8adedfcb092', symbol='ETH/U
         print(f'Error fetching data from the API: {e}')
 
 
-@shared_task
-def fetch_stock_data(api_key='cm0u7r1r01qk0g5fdm6gcm0u7r1r01qk0g5fdm70', symbol='AAPL', interval='1', outputsize=1):
-    api_url = f"https://finnhub.io/api/v1/stock/candle?symbol={symbol}&resolution={interval}&count={outputsize}&token={api_key}"
+# @shared_task
+# def fetch_stock_data(api_key='cm0u7r1r01qk0g5fdm6gcm0u7r1r01qk0g5fdm70', symbol='AAPL', interval='1', outputsize=1):
+#     api_url = f"https://finnhub.io/api/v1/stock/candle?symbol={symbol}&resolution={interval}&count={outputsize}&token={api_key}"
 
-    try:
-        response = requests.get(api_url)
-        stock_data = response.json()
-        print(stock_data)
+#     try:
+#         response = requests.get(api_url)
+#         stock_data = response.json()
+#         print(stock_data)
 
 # #         if 'c' in stock_data:
 # #             berlin_tz = pytz.timezone('Europe/Berlin')
@@ -265,6 +265,6 @@ def fetch_stock_data(api_key='cm0u7r1r01qk0g5fdm6gcm0u7r1r01qk0g5fdm70', symbol=
 
 #         #     print('Data successfully fetched and stored in the database.')
 #         # else:
-        print('Unexpected API response format. Missing "c" key.')
-    except requests.RequestException as e:
-        print(f'Error fetching stock data from the API: {e}')
+    #     print('Unexpected API response format. Missing "c" key.')
+    # except requests.RequestException as e:
+        # print(f'Error fetching stock data from the API: {e}')
