@@ -3,7 +3,7 @@ from datetime import datetime
 from .models import ForexData 
 from celery import shared_task
 from datetime import datetime
-from .models import ForexData, CryptoData
+from .models import ForexData, CryptoData, StockData
 import pytz
 #import finnhub
 
@@ -228,43 +228,34 @@ def fetch_crypto_data1(api_key='5607c990906143b4a804c8adedfcb092', symbol='ETH/U
         print(f'Error fetching data from the API: {e}')
 
 
-# @shared_task
-# def fetch_stock_data(api_key='cm0u7r1r01qk0g5fdm6gcm0u7r1r01qk0g5fdm70', symbol='AAPL', interval='1', outputsize=1):
-#     api_url = f"https://finnhub.io/api/v1/stock/candle?symbol={symbol}&resolution={interval}&count={outputsize}&token={api_key}"
-
-#     try:
-#         response = requests.get(api_url)
-#         stock_data = response.json()
-#         print(stock_data)
-
-# #         if 'c' in stock_data:
-# #             berlin_tz = pytz.timezone('Europe/Berlin')
-
-# #             for timestamp, close_price, open_price, high_price, low_price in zip(
-# #                     stock_data['t'], stock_data['c'], stock_data['o'], stock_data['h'], stock_data['l']):
-# #                 stock_datetime_utc = datetime.utcfromtimestamp(timestamp)
-# #                 stock_datetime_berlin = pytz.utc.localize(stock_datetime_utc).astimezone(berlin_tz)
-
-# #                 # Use 'pc' as the previous close
-# #                 previous_close = stock_data.get('pc')
-
-# #                 # Check if close_price is not null before creating the object
-# #                 if close_price is not None:
-# #                     StockData.objects.create(
-# #                         symbol=symbol,
-# #                         datetime=stock_datetime_berlin,
-# #                         current_price=float(close_price),
-# #                         open_price=float(open_price),
-# #                         close_price=float(close_price),
-# #                         high_price=float(high_price),
-# #                         low_price=float(low_price),
-# #                         previous_close=float(previous_close) if previous_close is not None else None,
-# #                     )
-# #                 else:
-# #                     print('Skipping data with null close_price.')
-
-#         #     print('Data successfully fetched and stored in the database.')
-#         # else:
-    #     print('Unexpected API response format. Missing "c" key.')
-    # except requests.RequestException as e:
-        # print(f'Error fetching stock data from the API: {e}')
+@shared_task
+def fetch_stock_data(api_key='1ebe6bd6682f44f5bbee1c74ba7a18cc', symbol='AAPL', interval='1min', outputsize=1):
+    api_endpoint = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&apikey={api_key}&outputsize={outputsize}'
+    try:
+        response = requests.get(api_endpoint)
+        stock_data_list = response.json()
+        #print(stock_data_list)
+        if 'values' in stock_data_list:
+            berlin_tz = pytz.timezone('Europe/Berlin')
+            for stock_data in stock_data_list['values']:
+                datetime_str = stock_data['datetime']
+                stock_datetime = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+                stock_datetime_utc = pytz.utc.localize(stock_datetime) 
+                stock_datetime_berlin = stock_datetime_utc.astimezone(berlin_tz)
+                
+                StockData.objects.create(
+                    symbol=symbol,
+                    datetime=stock_datetime_berlin,
+                    current_price=float(stock_data['close']),
+                    open_price=float(stock_data['open']),
+                    close_price=float(stock_data['close']),
+                    high_price=float(stock_data['high']),
+                    low_price=float(stock_data['low']),
+                    volume=float(stock_data['volume']),
+                    percent_change=float((float(stock_data['close']) - float(stock_data['open'])) / float(stock_data['open']) * 100),
+                )
+            print('Data successfully fetched and stored in the database.')
+        else:
+            print('Unexpected API response format. Missing "values" key.')
+    except requests.RequestException as e:
+        print(f'Error fetching data from the API: {e}')
