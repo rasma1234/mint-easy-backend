@@ -44,6 +44,18 @@ app.conf.beat_schedule = {
     'fetch-stock-data': {
         'task': 'Data.tasks.fetch_stock_data',
         'schedule': crontab(minute='*'),
+    'fetch-stock-data1': {
+        'task': 'Data.tasks.fetch_stock_data1',
+        'schedule': crontab(minute='*'),
+    'fetch-stock-data2': {
+        'task': 'Data.tasks.fetch_stock_data2',
+        'schedule': crontab(minute='*'),
+    'fetch-stock-data3': {
+        'task': 'Data.tasks.fetch_stock_data3',
+        'schedule': crontab(minute='*'),
+    'fetch-stock-data4': {
+        'task': 'Data.tasks.fetch_stock_data4',
+        'schedule': crontab(minute='*'),
     },
     'fetch-forex-data-15': {
         'task': 'Data.tasks.fetch_forex_data_15',
