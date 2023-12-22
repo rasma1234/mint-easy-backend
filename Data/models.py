@@ -42,6 +42,7 @@ class StockData(models.Model):
 
 
 
+
 class ForexData_15min(models.Model):
     symbol = models.CharField(max_length=10)
     datetime = models.DateTimeField()

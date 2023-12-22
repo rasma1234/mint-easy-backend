@@ -262,7 +262,7 @@ def fetch_stock_data(api_key='1ebe6bd6682f44f5bbee1c74ba7a18cc', symbol='AAPL', 
 
 
 @shared_task
-def fetch_stock_data(api_key='d6d2d7367d1a439da36736e672b0f8f0', symbol='TSLA', interval='1min', outputsize=1):
+def fetch_stock_data1(api_key='d6d2d7367d1a439da36736e672b0f8f0', symbol='TSLA', interval='1min', outputsize=1):
     api_endpoint = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&apikey={api_key}&outputsize={outputsize}'
     try:
         response = requests.get(api_endpoint)
@@ -295,41 +295,7 @@ def fetch_stock_data(api_key='d6d2d7367d1a439da36736e672b0f8f0', symbol='TSLA', 
 
 
 @shared_task
-def fetch_stock_data(api_key='5b4c67e251bc404c8c072f185cd34e6f', symbol='AMZN', interval='1min', outputsize=1):
-    api_endpoint = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&apikey={api_key}&outputsize={outputsize}'
-    try:
-        response = requests.get(api_endpoint)
-        stock_data_list = response.json()
-        #print(stock_data_list)
-        if 'values' in stock_data_list:
-            berlin_tz = pytz.timezone('Europe/Berlin')
-            for stock_data in stock_data_list['values']:
-                datetime_str = stock_data['datetime']
-                stock_datetime = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
-                stock_datetime_utc = pytz.utc.localize(stock_datetime) 
-                stock_datetime_berlin = stock_datetime_utc.astimezone(berlin_tz)
-                
-                StockData.objects.create(
-                    symbol=symbol,
-                    datetime=stock_datetime_berlin,
-                    current_price=float(stock_data['close']),
-                    open_price=float(stock_data['open']),
-                    close_price=float(stock_data['close']),
-                    high_price=float(stock_data['high']),
-                    low_price=float(stock_data['low']),
-                    volume=float(stock_data['volume']),
-                    percent_change=float((float(stock_data['close']) - float(stock_data['open'])) / float(stock_data['open']) * 100),
-                )
-            print('Data successfully fetched and stored in the database.')
-        else:
-            print('Unexpected API response format. Missing "values" key.')
-    except requests.RequestException as e:
-        print(f'Error fetching data from the API: {e}')
-
-
-
-@shared_task
-def fetch_stock_data(api_key='449660e5255c40ea9350b53b45e6addb', symbol='MSFT', interval='1min', outputsize=1):
+def fetch_stock_data2(api_key='5b4c67e251bc404c8c072f185cd34e6f', symbol='AMZN', interval='1min', outputsize=1):
     api_endpoint = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&apikey={api_key}&outputsize={outputsize}'
     try:
         response = requests.get(api_endpoint)
@@ -363,7 +329,41 @@ def fetch_stock_data(api_key='449660e5255c40ea9350b53b45e6addb', symbol='MSFT', 
 
 
 @shared_task
-def fetch_stock_data(api_key='e86546bfa67a445c977012a16c2e8f12', symbol='JPM', interval='1min', outputsize=1):
+def fetch_stock_data3(api_key='449660e5255c40ea9350b53b45e6addb', symbol='MSFT', interval='1min', outputsize=1):
+    api_endpoint = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&apikey={api_key}&outputsize={outputsize}'
+    try:
+        response = requests.get(api_endpoint)
+        stock_data_list = response.json()
+        #print(stock_data_list)
+        if 'values' in stock_data_list:
+            berlin_tz = pytz.timezone('Europe/Berlin')
+            for stock_data in stock_data_list['values']:
+                datetime_str = stock_data['datetime']
+                stock_datetime = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+                stock_datetime_utc = pytz.utc.localize(stock_datetime) 
+                stock_datetime_berlin = stock_datetime_utc.astimezone(berlin_tz)
+                
+                StockData.objects.create(
+                    symbol=symbol,
+                    datetime=stock_datetime_berlin,
+                    current_price=float(stock_data['close']),
+                    open_price=float(stock_data['open']),
+                    close_price=float(stock_data['close']),
+                    high_price=float(stock_data['high']),
+                    low_price=float(stock_data['low']),
+                    volume=float(stock_data['volume']),
+                    percent_change=float((float(stock_data['close']) - float(stock_data['open'])) / float(stock_data['open']) * 100),
+                )
+            print('Data successfully fetched and stored in the database.')
+        else:
+            print('Unexpected API response format. Missing "values" key.')
+    except requests.RequestException as e:
+        print(f'Error fetching data from the API: {e}')
+
+
+
+@shared_task
+def fetch_stock_data4(api_key='e86546bfa67a445c977012a16c2e8f12', symbol='JPM', interval='1min', outputsize=1):
     api_endpoint = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&apikey={api_key}&outputsize={outputsize}'
     try:
         response = requests.get(api_endpoint)
