@@ -63,47 +63,47 @@ app.conf.beat_schedule = {
     },
     'fetch-forex-data1-15': {
         'task': 'Data.tasks.fetch_forex_data1_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-forex-data2-15': {
         'task': 'Data.tasks.fetch_forex_data2_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-forex-data3-15': {
         'task': 'Data.tasks.fetch_forex_data3_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-forex-data4-15': {
         'task': 'Data.tasks.fetch_forex_data4_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-crypto-data-15': {
         'task': 'Data.tasks.fetch_crypto_data_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-crypto-data1-15': {
         'task': 'Data.tasks.fetch_crypto_data1_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-stock-data-15': {
         'task': 'Data.tasks.fetch_stock_data_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-stock-data1-15': {
         'task': 'Data.tasks.fetch_stock_data1_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-stock-data2-15': {
         'task': 'Data.tasks.fetch_stock_data2_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-stock-data3-15': {
         'task': 'Data.tasks.fetch_stock_data3_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-stock-data4-15': {
         'task': 'Data.tasks.fetch_stock_data4_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
  }
 app.conf.broker_connection_retry_on_startup = True
