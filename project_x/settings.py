@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-o0hkfl-k5u0pjl1(+s*@m4&fscky1)b1j@_%@y8ibp7hb((1_p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -75,7 +75,7 @@ ROOT_URLCONF = 'project_x.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -158,7 +158,9 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ]
 }
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+#EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
@@ -194,3 +196,4 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_IMPORTS = ('Data.tasks',)
 
+#DJ_REST_AUTH.reset_password_message = 'dj_rest_auth/password_reset_message.txt'
