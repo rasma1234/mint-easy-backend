@@ -395,19 +395,6 @@ def fetch_stock_data4(api_key='e86546bfa67a445c977012a16c2e8f12', symbol='JPM', 
         print(f'Error fetching data from the API: {e}')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 @shared_task
 def fetch_forex_data_15(api_key='4649b1264fd241779aadd41843580216', symbol='EUR/USD', interval='15min', outputsize=5000):
     api_endpoint = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&apikey={api_key}&outputsize={outputsize}'
