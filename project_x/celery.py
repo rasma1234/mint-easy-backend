@@ -59,7 +59,7 @@ app.conf.beat_schedule = {
     },
     'fetch-forex-data-15': {
         'task': 'Data.tasks.fetch_forex_data_15',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/20'),
     },
     'fetch-forex-data1-15': {
         'task': 'Data.tasks.fetch_forex_data1_15',
