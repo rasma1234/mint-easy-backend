@@ -1,0 +1,12 @@
+{% load custom_filters %}
+
+ Subject: Account Confirmation
+
+Hello {{ username }},
+
+Thank you for signing up! Please click the following link to confirm your account:
+
+https://127.0.0.1:5173/{{ activate_url|split_token}}
+
+Best regards,
+Your App Team 
