@@ -1,5 +1,10 @@
 # Smart_Invest
+## updates:
+3.1.2021:
 
+- set up the "password_reset_key_message.txt" file in the root template, removed local template  folder from Users app
+- fix the custom reset mst going to front end
+- delete signal.py and its import in app.py
 ---
 
 ## Project Setup
