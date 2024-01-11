@@ -13,6 +13,5 @@ urlpatterns = [
     path('auth/password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('login', CustomLoginView.as_view(), name='custom-login'),
     path('registration/', CustomRegisterView.as_view(), name='rest_register'),
-    path('get-csrf-token/', send_csrf, name='csrf'),
-    
+    path('get-csrf-token/', send_csrf, name='csrf'),    
 ]
