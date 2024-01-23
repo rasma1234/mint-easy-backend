@@ -1,50 +1,148 @@
-# import requests
-# from datetime import datetime
-# from .models import ForexData 
-# from celery import shared_task
-# from datetime import datetime
-# from .models import ForexData
-# import pytz
+from rest_framework import generics, permissions
+from .models import AccountBalance, StockOrder
+from .serializers import AccountBalanceSerializer, StockOrderSerializer
+from django.views.generic import DetailView, ListView
+from rest_framework import generics, permissions
+from .models import StockOrder
+from .serializers import StockOrderSerializer
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from .models import AccountBalance, StockOrder, StockData
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from .models import StockOrder, StockData
+from .serializers import StockOrderSerializer
+
+class AccountBalanceDetailView(generics.RetrieveAPIView):
+    serializer_class = AccountBalanceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    previous_orders_count = 0
+    def get_object(self):
+        user = self.request.user
+        print(f'User:{user}')
+        stock_orders_count = StockOrder.objects.filter(user_id=user.id).count()
+        print(f'Stock_Orders:{stock_orders_count}')
+        try:
+            account_balance = AccountBalance.objects.get(user_id=user)
+            stock_order = StockOrder.objects.filter(user_id=user).first()
+            stock_symbol = stock_order.symbol
+            stock_quantity = stock_order.quantity
+            account_balance.stock_value = self.get_stock_value(stock_symbol, stock_quantity, stock_order)
+        except AccountBalance.DoesNotExist:
+            account_balance = AccountBalance.objects.create(user_id=user, balance=100000)
+        #self.previous_orders_count += stock_orders_count
+        if self.previous_orders_count != stock_orders_count:
+            print(f"Number of orders has changed. Current count: {stock_orders_count}")
+            print(f'Previous Orders: {self.previous_orders_count}')
+            if self.previous_orders_count < stock_orders_count:
+                stock_order = StockOrder.objects.filter(user_id=user).first()
+                stock_amount = stock_order.amount
+                account_balance.balance -= stock_amount
+                if account_balance.balance < 0:
+                    account_balance.balance = 0
+                # Calculate and set stock_value directly in retrieve method
+                stock_data = StockData.objects.filter(symbol=stock_symbol).order_by('datetime').first()
+                if stock_data:
+                    stock_value = (stock_data.current_price - stock_order.open_price) * stock_quantity
+                else:
+                    stock_value = 0
+                account_balance.save()
+                #print(self.previous_orders_count)
+            self.previous_orders_count = stock_orders_count
+            print(self.previous_orders_count)
+        return account_balance
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Serialize the instance
+        serializer = self.get_serializer(instance)
+        # Add 'Profit_Loss' field to the serialized data
+        serializer.data['profit_loss'] = instance.stock_value  # Include the calculated stock_value here
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        # Serialize the instance
+        serializer = self.get_serializer(instance)
+
+        # Add 'Profit_Loss' field to the serialized data
+        serializer.data['profit_loss'] = instance.stock_value  # Include the calculated stock_value here
+
+        return Response(serializer.data)
+
+    def get_stock_value(self, symbol, quantity, stock_order):
+        try:
+            # Retrieve the most recent StockData based on the datetime field
+            stock_data = StockData.objects.filter(symbol=symbol).order_by('datetime').first()
+            #print(stock_data)
+            if stock_data:
+                # Implement your logic to calculate stock value based on stock data and quantity
+                result = (stock_data.current_price - stock_order.open_price) * quantity
+                #print("Stock Value Calculation Result:", result)
+                return result  # Replace with your actual logic
+            else:
+                # Handle the case when no stock data is found for the given symbol
+                return 0  # You may want to handle this differently based on your requirements
+
+        except StockData.DoesNotExist:
+            # Handle the case when no stock data is found for the given symbol
+            return 0  # You may want to handle this differently based on your requirements
 
 
-# @shared_task
-# def fetch_forex_data(api_key='b6e55de583394e2b97799f6a82e3156a', symbol='EUR/USD', interval='1min', outputsize=1):
-#     api_endpoint = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&apikey={api_key}&outputsize={outputsize}'
-#     try:
-#         # Make a GET request to the Twelve Data API
-#         response = requests.get(api_endpoint)
-#         # Parse the API response (assuming it's in JSON format)
-#         forex_data_list = response.json()
-#         print(forex_data_list)
-#         # Check if 'values' key exists in the response
-#         if 'values' in forex_data_list:
-#             # Save data to the database using the Django model
-#             for forex_data in forex_data_list['values']:
-#                 # Convert the 'datetime' string to a datetime object
-#                 datetime_str = forex_data['datetime']
-#                 forex_datetime = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
-#                 forex_datetime = pytz.utc.localize(forex_datetime)  # Assume the datetime is in UTC, adjust accordingly
-#                 ForexData.objects.create(
-#                     symbol=symbol,
-#                     datetime=forex_datetime,
-#                     current_price=float(forex_data['close']),
-#                     open_price=float(forex_data['open']),
-#                     close_price=float(forex_data['close']),
-#                     high_price=float(forex_data['high']),
-#                     low_price=float(forex_data['low']),
-#                     percent_change=float((float(forex_data['close']) - float(forex_data['open'])) / float(forex_data['open']) * 100),
-#                 )
-#             print('Data successfully fetched and stored in the database.')
-#         else:
-#             print('Unexpected API response format. Missing "values" key.')
-#     except requests.RequestException as e:
-#         print(f'Error fetching data from the API: {e}')
+
+class StockOrderProfitLossView(generics.RetrieveAPIView):
+    serializer_class = StockOrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        user = self.request.user
+        stock_order = StockOrder.objects.filter(user_id=user).first()
+        print(stock_order)
+
+        if stock_order:
+            most_recent_stock_data = StockData.objects.filter(symbol=stock_order.symbol, datetime__lte=stock_order.start_date).order_by('-datetime').first()
+            print(most_recent_stock_data)
+            
+            return stock_order, most_recent_stock_data
+
+        else:
+            return None, None
+
+    def retrieve(self, request, *args, **kwargs):
+        stock_order, most_recent_stock_data = self.get_object()
+
+        if not stock_order:
+            return Response({"detail": "Stock Order not found."}, status=404)
+
+        profit_loss = 0
+        if stock_order.sell:
+            # For sell orders, profit_loss = (close_price - open_price) * quantity
+            profit_loss = (stock_order.close_price - most_recent_stock_data.current_price) * stock_order.quantity
+        elif stock_order.buy:
+            # For buy orders, profit_loss = 0 (assuming no profit or loss until the stock is sold)
+            profit_loss = 0
+
+        serializer = self.get_serializer(stock_order)
+        data = serializer.data
+        data['profit_loss'] = profit_loss
+        return Response(data)
 
 
-# # api_key = 'b6e55de583394e2b97799f6a82e3156a'
-# # symbol = 'EUR/USD'
-# # interval = '1min'
-# # outputsize = 1
+class StockOrderCRUDView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = StockOrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-# # fetch_forex_data(api_key, symbol, interval, outputsize)
+    def get_object(self):
+        user = self.request.user
+        order_id = self.kwargs.get('pk')
+        print(f"User: {user}, Order ID: {order_id}")
 
+    def get_queryset(self):
+        user = self.request.user
+        return StockOrder.objects.filter(user_id=user)
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(user_id=self.request.user)
