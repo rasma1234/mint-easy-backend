@@ -692,7 +692,7 @@ def fetch_stock_data3_15(api_key=config("API_KEY"), symbol='MSFT', interval='15m
         stock_data_list = response.json()
         if 'values' in stock_data_list:
             berlin_tz = pytz.timezone('Europe/Berlin')
-            for stock_data in stock_data_list['values'
+            for stock_data in stock_data_list['values']:
                 
                 StockData_15min.objects.create(
                     symbol=symbol,
