@@ -13,7 +13,7 @@ class AccountBalanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AccountBalance
-        fields = ['id', 'balance', 'created_at', 'updated_at', 'user_id', 'profit_loss']
+        fields = ['id', 'balance', 'created_at', 'updated_at', 'user_id', 'profit_loss', 'stock_amount']
 
     def get_profit_loss(self, instance):
         return getattr(instance, 'stock_value', 0)

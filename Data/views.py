@@ -7,7 +7,7 @@ from .models import StockOrder
 from .serializers import StockOrderSerializer
 from rest_framework import generics, permissions
 from rest_framework.response import Response
-from .models import AccountBalance, StockOrder, StockData
+from .models import AccountBalance, StockOrder, StockData, Stockordercounter
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from .models import StockOrder, StockData
@@ -16,25 +16,32 @@ from .serializers import StockOrderSerializer
 class AccountBalanceDetailView(generics.RetrieveAPIView):
     serializer_class = AccountBalanceSerializer
     permission_classes = [permissions.IsAuthenticated]
-    previous_orders_count = 0
+
     def get_object(self):
         user = self.request.user
-        print(f'User:{user}')
+        #print(f'User:{user}')
         stock_orders_count = StockOrder.objects.filter(user_id=user.id).count()
-        print(f'Stock_Orders:{stock_orders_count}')
+        stock_counter, created = Stockordercounter.objects.get_or_create(user_id=user)
+        #print(f'Stockcounter: {stock_counter.counter}')
+        if created:
+            stock_counter.counter = 0
+            stock_counter.save()
+        #print(f'Stock_Orders:{stock_orders_count}')
         try:
             account_balance = AccountBalance.objects.get(user_id=user)
             stock_order = StockOrder.objects.filter(user_id=user).first()
             stock_symbol = stock_order.symbol
             stock_quantity = stock_order.quantity
             account_balance.stock_value = self.get_stock_value(stock_symbol, stock_quantity, stock_order)
+            account_balance.stock_amount = stock_order.amount
+            #print(account_balance.stock_amount)  # Set current_invest based on StockOrder
+            account_balance.save()
         except AccountBalance.DoesNotExist:
             account_balance = AccountBalance.objects.create(user_id=user, balance=100000)
-        #self.previous_orders_count += stock_orders_count
-        if self.previous_orders_count != stock_orders_count:
-            print(f"Number of orders has changed. Current count: {stock_orders_count}")
-            print(f'Previous Orders: {self.previous_orders_count}')
-            if self.previous_orders_count < stock_orders_count:
+        if stock_counter.counter != stock_orders_count:
+            #print(f"Number of orders has changed. Current count: {stock_counter.counter}")
+            #print(f'Stock Orders: {stock_orders_count}')
+            if stock_counter.counter < stock_orders_count:
                 stock_order = StockOrder.objects.filter(user_id=user).first()
                 stock_amount = stock_order.amount
                 account_balance.balance -= stock_amount
@@ -46,28 +53,20 @@ class AccountBalanceDetailView(generics.RetrieveAPIView):
                     stock_value = (stock_data.current_price - stock_order.open_price) * stock_quantity
                 else:
                     stock_value = 0
+                account_balance.stock_value = stock_value       
                 account_balance.save()
                 #print(self.previous_orders_count)
-            self.previous_orders_count = stock_orders_count
-            print(self.previous_orders_count)
+            stock_counter.counter = stock_orders_count
+            stock_counter.save()
+            #print(f'The last: {stock_counter.counter}')
         return account_balance
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         # Serialize the instance
         serializer = self.get_serializer(instance)
         # Add 'Profit_Loss' field to the serialized data
-        serializer.data['profit_loss'] = instance.stock_value  # Include the calculated stock_value here
-        return Response(serializer.data)
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-
-        # Serialize the instance
-        serializer = self.get_serializer(instance)
-
-        # Add 'Profit_Loss' field to the serialized data
-        serializer.data['profit_loss'] = instance.stock_value  # Include the calculated stock_value here
-
+        serializer.data['profit_loss'] = instance.stock_value 
+        serializer.data['stock_amount'] = instance.stock_amount
         return Response(serializer.data)
 
     def get_stock_value(self, symbol, quantity, stock_order):

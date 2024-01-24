@@ -92,7 +92,7 @@ class AccountBalance(models.Model):
     balance = models.FloatField(default=100000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    stock_amount = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
     def __str__(self):
         return f"Account {self.user_id.username} Balance: {self.balance}"
 
@@ -115,3 +115,7 @@ class StockOrder(models.Model):
 
     def __str__(self):
         return f"{self.id},{self.user_id.username},{self.symbol},{self.amount}" 
+    
+class Stockordercounter(models.Model):
+    user_id =  models.OneToOneField(User, on_delete=models.CASCADE)
+    counter =  models.IntegerField(default=0)
