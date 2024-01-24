@@ -86,6 +86,7 @@ class StockData_15min(models.Model):
     
 User = get_user_model()
 
+# Account Balance for the balance in the startside
 class AccountBalance(models.Model):
     user_id = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.FloatField(default=100000)
