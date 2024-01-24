@@ -27,3 +27,8 @@ class StockOrderSerializer(serializers.ModelSerializer):
         # fields = ['user_id', 'start_date', 'day_trading', 'long_term_invest',
         #           'symbol', 'sell', 'buy', 'open_price', 'close_price', 'quantity',
         #           'amount', 'end_date', 'stop_loss', 'take_profit']
+
+
+class ChatResponseSerializer(serializers.Serializer):
+    prompt = serializers.CharField()
+    chat_response = serializers.CharField()
