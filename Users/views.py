@@ -69,10 +69,26 @@ class UserDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = UserDetailView
 
 
-#@method_decorator(csrf_protect, name='dispatch')
+# #@method_decorator(csrf_protect, name='dispatch')
+# class CustomLoginView(LoginView):
+#     def post(self, request, *args, **kwargs):
+#         response = super().post(request, *args, **kwargs)
+#         user = request.user
+#         if not user.emailaddress_set.filter(verified=True).exists():
+#             logout(request)
+#             return Response(
+#                 {'detail': 'Email not verified.'},
+#                 status=status.HTTP_403_FORBIDDEN  # 403 Forbidden
+#             )
+
+#         return response
+
 class CustomLoginView(LoginView):
     def post(self, request, *args, **kwargs):
+        # Call the parent class's post method
         response = super().post(request, *args, **kwargs)
+
+        # Check if the user's email is verified
         user = request.user
         if not user.emailaddress_set.filter(verified=True).exists():
             logout(request)
@@ -81,8 +97,11 @@ class CustomLoginView(LoginView):
                 status=status.HTTP_403_FORBIDDEN  # 403 Forbidden
             )
 
-        return response
-
+        # Include user_id in the response
+        user_id = user.id
+        response_data = {'user_id': user_id, 'detail': 'Login successful.'}
+        print(response_data)
+        return Response(response_data, status=response.status_code)
 
 #@method_decorator(csrf_protect, name='dispatch')
 class CustomRegisterView(RegisterView):
