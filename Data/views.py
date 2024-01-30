@@ -247,6 +247,8 @@ class ChatResponseSender:
     def get_chat_response(self):
         response = self.chat.send_message(self.prompt)
         return response.text
+    
+    
 class RetrieveChatResponseAPI(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def retrieve(self, request, *args, **kwargs):
@@ -267,7 +269,7 @@ class RetrieveChatResponseAPI(generics.RetrieveAPIView):
             "prompt": prompt,
             "chat_response": chat_response
         }
-        print(f'data: {data}')
+        #print(f'data: {data}')
         # Include CSRF token in headers for POST request
         csrf_token = request.COOKIES.get('csrftoken')
         headers = {
@@ -277,8 +279,8 @@ class RetrieveChatResponseAPI(generics.RetrieveAPIView):
 
         # Send the data to the Django API
         response = requests.post(api_endpoint_url, json=data, headers=headers)
-        print(f'User: {request.user}, Permissions: {request.user.user_permissions.all()}')
-        print(f'CSRF Token: {csrf_token}')
+        #print(f'User: {request.user}, Permissions: {request.user.user_permissions.all()}')
+        #print(f'CSRF Token: {csrf_token}')
         
         #Check the response status
         #if response.status_code == requests.codes.ok:

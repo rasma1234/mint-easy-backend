@@ -83,6 +83,29 @@ class UserDetailView(RetrieveUpdateDestroyAPIView):
 
 #         return response
 
+# class CustomLoginView(LoginView):
+#     def post(self, request, *args, **kwargs):
+#         # Call the parent class's post method
+#         response = super().post(request, *args, **kwargs)
+
+#         # Check if the user's email is verified
+#         user = request.user
+#         if not user.emailaddress_set.filter(verified=True).exists():
+#             logout(request)
+#             return Response(
+#                 {'detail': 'Email not verified.'},
+#                 status=status.HTTP_403_FORBIDDEN  # 403 Forbidden
+#             )
+
+#         # Include user_id in the response
+#         user_id = user.id
+#         response_data = {'user_id': user_id, 'detail': 'Login successful.'}
+#         print(response_data)
+#         return Response(response_data, status=response.status_code)
+from dj_rest_auth.serializers import TokenSerializer
+from rest_framework.response import Response
+from rest_framework import status
+
 class CustomLoginView(LoginView):
     def post(self, request, *args, **kwargs):
         # Call the parent class's post method
@@ -97,9 +120,10 @@ class CustomLoginView(LoginView):
                 status=status.HTTP_403_FORBIDDEN  # 403 Forbidden
             )
 
-        # Include user_id in the response
+        # Include user_id and auth token in the response
         user_id = user.id
-        response_data = {'user_id': user_id, 'detail': 'Login successful.'}
+        token_data = TokenSerializer(user.auth_token).data
+        response_data = {'user_id': user_id, 'detail': 'Login successful', 'auth_token': token_data['key']}
         print(response_data)
         return Response(response_data, status=response.status_code)
 
