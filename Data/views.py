@@ -50,6 +50,8 @@ from django.urls import reverse
 from rest_framework.views import APIView
 from datetime import datetime, timedelta
 import pandas as pd
+from django.http import JsonResponse
+from .models import StockData, ForexData, CryptoData
 
 
 class AccountBalanceDetailView(generics.RetrieveAPIView):
@@ -293,3 +295,52 @@ class RetrieveChatResponseAPI(APIView):
         }
         # Send the data to the Django API with POST
         return Response(data)
+
+
+def latest_prices(request):
+    # Get the symbol from the request
+    symbol = request.GET.get("symbol", "")
+    if not symbol:
+        # Return error response if symbol is not provided
+        return JsonResponse({"error": "Symbol parameter is required"}, status=400)
+    try:
+        # Check if the symbol is a stock symbol
+        if StockData.objects.filter(symbol=symbol).exists():
+            # Get the most recent stock data for the provided symbol
+            most_recent_stock = StockData.objects.filter(symbol=symbol).latest("datetime")
+            # Extract the current price
+            current_price = most_recent_stock.current_price
+            # Construct the response
+            response_data = {"symbol": symbol, "current_price": current_price}
+            # Return the response
+            return JsonResponse(response_data)
+        # Check if the symbol is a forex symbol
+        elif ForexData.objects.filter(symbol=symbol).exists():
+            # Get the most recent forex data for the provided symbol
+            most_recent_forex = ForexData.objects.filter(symbol=symbol).latest("datetime")
+            # Extract the current price
+            current_price = most_recent_forex.current_price
+            # Construct the response
+            response_data = {"symbol": symbol, "current_price": current_price}
+            # Return the response
+            return JsonResponse(response_data)
+        # Check if the symbol is a crypto symbol
+        elif CryptoData.objects.filter(symbol=symbol).exists():
+            # Get the most recent crypto data for the provided symbol
+            most_recent_crypto = CryptoData.objects.filter(symbol=symbol).latest("datetime")
+            # Extract the current price
+            current_price = most_recent_crypto.current_price
+            # Construct the response
+            response_data = {"symbol": symbol, "current_price": current_price}
+            # Return the response
+            return JsonResponse(response_data)
+        else:
+            # Return error response if no data found for the provided symbol
+            return JsonResponse(
+                {"error": "No data found for the provided symbol"}, status=404
+            )
+    except (StockData.DoesNotExist, ForexData.DoesNotExist, CryptoData.DoesNotExist):
+        # Return error response if no data found for the provided symbol
+        return JsonResponse(
+            {"error": "No data found for the provided symbol"}, status=404
+        )
