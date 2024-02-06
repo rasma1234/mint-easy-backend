@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
 class ForexData(models.Model):
     symbol = models.CharField(max_length=10)
     datetime = models.DateTimeField()
@@ -26,6 +27,7 @@ class CryptoData(models.Model):
     def __str__(self):
         return f"{self.symbol} - {self.datetime}"
     
+
 class StockData(models.Model):
     symbol = models.CharField(max_length=10)
     datetime = models.DateTimeField()
@@ -39,9 +41,6 @@ class StockData(models.Model):
     
     def __str__(self):
         return f"{self.symbol} - {self.datetime}"
-
-
-
 
 
 class ForexData_15min(models.Model):
@@ -83,10 +82,11 @@ class StockData_15min(models.Model):
     
     def __str__(self):
         return f"{self.symbol} - {self.datetime}"
-    
+
+
 User = get_user_model()
 
-# Account Balance for the balance in the startside
+
 class AccountBalance(models.Model):
     user_id = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.FloatField(default=100000)

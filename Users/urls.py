@@ -2,6 +2,8 @@ from django.urls import path
 from .views import GoogleLogin, FacebookConnect, TwitterConnect, UserListView, UserDetailView, CustomLoginView, CustomRegisterView, send_csrf
 from dj_rest_auth.registration.views import VerifyEmailView
 from dj_rest_auth.views import PasswordResetConfirmView
+
+
 urlpatterns = [
 
     path('dj-rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
@@ -13,5 +15,6 @@ urlpatterns = [
     path('auth/password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('login/', CustomLoginView.as_view(), name='custom-login'),
     path('registration/', CustomRegisterView.as_view(), name='rest_register'),
-    path('get-csrf-token/', send_csrf, name='csrf'),    
+    path('get-csrf-token/', send_csrf, name='csrf'),  
+      
 ]

@@ -1,41 +1,28 @@
-# user = test password = test
+#user = test password = test
+from dj_rest_auth.views import LoginView
+from dj_rest_auth.registration.views import RegisterView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.github.views import GitHubOAuth2Adapter
 from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from dj_rest_auth.registration.views import SocialConnectView
+from dj_rest_auth.registration.views import SocialLoginView, SocialConnectView
 from dj_rest_auth.social_serializers import TwitterConnectSerializer
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from allauth.account.models import EmailAddress
-from dj_rest_auth.views import UserDetailsView
 from .serializers import UserListView, UserDetailView
-from dj_rest_auth.serializers import UserDetailsSerializer
-from rest_framework import generics
+from dj_rest_auth.serializers import UserDetailsSerializer, TokenSerializer
+from rest_framework import generics, status
 from django.contrib.auth.models import User
-#from .permissions import CustomLoginSerializer
 from django.views.decorators.csrf import csrf_protect
-from dj_rest_auth.views import LoginView
 from rest_framework.response import Response
-from dj_rest_auth.registration.views import SocialLoginView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import logout
-from dj_rest_auth.views import LoginView
-from rest_framework.response import Response
-from rest_framework import status
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
 from django.core.mail import send_mail
-from dj_rest_auth.registration.views import RegisterView
-from rest_framework.response import Response
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
-from django.http import JsonResponse  # new
-from django.middleware.csrf import get_token  # new
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+
 
 def send_csrf(request):
     return JsonResponse({"csrfToken": get_token(request)})  
@@ -52,8 +39,6 @@ class TwitterConnect(SocialConnectView):
     adapter_class = TwitterOAuthAdapter
 
 class UserListView(ListCreateAPIView):
-    #queryset = User.objects.all()
-    #permission_classes = (IsAuthorOrReadOnly, )
     serializer_class = UserDetailView
     
     def get_queryset(self):
@@ -68,43 +53,6 @@ class UserDetailView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailView
 
-
-# #@method_decorator(csrf_protect, name='dispatch')
-# class CustomLoginView(LoginView):
-#     def post(self, request, *args, **kwargs):
-#         response = super().post(request, *args, **kwargs)
-#         user = request.user
-#         if not user.emailaddress_set.filter(verified=True).exists():
-#             logout(request)
-#             return Response(
-#                 {'detail': 'Email not verified.'},
-#                 status=status.HTTP_403_FORBIDDEN  # 403 Forbidden
-#             )
-
-#         return response
-
-# class CustomLoginView(LoginView):
-#     def post(self, request, *args, **kwargs):
-#         # Call the parent class's post method
-#         response = super().post(request, *args, **kwargs)
-
-#         # Check if the user's email is verified
-#         user = request.user
-#         if not user.emailaddress_set.filter(verified=True).exists():
-#             logout(request)
-#             return Response(
-#                 {'detail': 'Email not verified.'},
-#                 status=status.HTTP_403_FORBIDDEN  # 403 Forbidden
-#             )
-
-#         # Include user_id in the response
-#         user_id = user.id
-#         response_data = {'user_id': user_id, 'detail': 'Login successful.'}
-#         print(response_data)
-#         return Response(response_data, status=response.status_code)
-from dj_rest_auth.serializers import TokenSerializer
-from rest_framework.response import Response
-from rest_framework import status
 
 class CustomLoginView(LoginView):
     def post(self, request, *args, **kwargs):
@@ -126,6 +74,7 @@ class CustomLoginView(LoginView):
         response_data = {'user_id': user_id, 'detail': 'Login successful', 'auth_token': token_data['key']}
         print(response_data)
         return Response(response_data, status=response.status_code)
+
 
 #@method_decorator(csrf_protect, name='dispatch')
 class CustomRegisterView(RegisterView):

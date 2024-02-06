@@ -159,16 +159,8 @@ REST_FRAMEWORK = {
     ]
 }
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 
-#ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-#ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
-# ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'
-# ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
-# ACCOUNT_EMAIL_CONFIRMATION_URL = 'account_confirm_email'
-# ACCOUNT_EMAIL_VERIFICATION_SUBJECT = 'Activate your account.'
 
 # SMTP settings (example for Gmail, replace with your email provider's settings)
 EMAIL_HOST = config("EMAIL_HOST", default='smtp.ionos.de')
@@ -196,4 +188,3 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_IMPORTS = ('Data.tasks',)
 
-#DJ_REST_AUTH.reset_password_message = 'dj_rest_auth/password_reset_message.txt'
