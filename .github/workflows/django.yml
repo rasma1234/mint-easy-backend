@@ -44,10 +44,10 @@ jobs:
         DB_PASSWORD: yourpassword
         DB_PORT: 5432
         DB_HOST: localhost
-        SECRETKEY: ${{ secrets.SECRETKEY }}
-        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-        DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
-        SERVER_EMAIL: ${{ secrets.SERVER_EMAIL }}
+        SECRETKEY: ${{ secrets.SECRETKEY || 'default_secret_key' }}
+        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER || 'default_email_host_user' }}
+        DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL || 'default_default_from_email'  }}
+        SERVER_EMAIL: ${{ secrets.SERVER_EMAIL || 'default_server_email'  }}
               
         
       run: |
