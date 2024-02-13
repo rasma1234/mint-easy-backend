@@ -1,6 +1,6 @@
 # Smart_Invest
 
-#This project only runs with the correct settings and access codes and passwords.
+# This project only runs with the correct settings and access codes and passwords.
 
 ## updates:
 3.1.2021:
