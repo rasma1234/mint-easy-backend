@@ -1,43 +1,3 @@
-# from rest_framework import generics, permissions
-# from .models import AccountBalance, StockOrder
-# from .serializers import AccountBalanceSerializer, StockOrderSerializer
-# from django.views.generic import DetailView, ListView
-# from rest_framework import generics, permissions
-# from .models import StockOrder
-# from .serializers import StockOrderSerializer
-# from rest_framework import generics, permissions
-# from rest_framework.response import Response
-# from .models import AccountBalance, StockOrder, StockData, Stockordercounter
-# from rest_framework import generics, permissions
-# from rest_framework.response import Response
-# from .models import StockOrder, StockData
-# from .serializers import StockOrderSerializer, ChatResponseSerializer
-# from rest_framework import generics, permissions
-# from rest_framework.response import Response
-# from .models import StockOrder, Stockordercounter, AccountBalance, StockData
-# from .serializers import AccountBalanceSerializer
-# # import os
-# # from vertexai import init
-# # from vertexai.preview.generative_models import GenerativeModel, ChatSession
-# # from rest_framework import generics, permissions, status
-# # from django.urls import reverse
-# # from rest_framework.response import Response
-# from rest_framework.views import APIView
-# # import requests
-# # from datetime import datetime 
-# # import statsmodels.api as sm
-# # from datetime import datetime, timedelta
-# # import pandas as pd
-# from rest_framework import generics, permissions
-# from .models import AccountBalance, StockOrder, StockData, Stockordercounter
-# from .serializers import AccountBalanceSerializer, StockOrderSerializer, ChatResponseSerializer
-# from django.views.generic import DetailView, ListView
-# import os
-# from vertexai import init
-# from vertexai.preview.generative_models import GenerativeModel, ChatSession
-# import statsmodels.api as sm
-# from datetime import datetime, timedelta
-# import pandas as pd
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from .models import AccountBalance, StockOrder, StockData, Stockordercounter
@@ -189,7 +149,7 @@ class ChatResponseSender:
         self.project_id = "top-reef-411708"
         self.location = "us-central1"
         init(project=self.project_id, location=self.location)
-        self.model = GenerativeModel("gemini-pro")
+        self.model = GenerativeModel("gemini-pro-vision")
         self.chat = self.model.start_chat()
 
     def get_stock_price(self):

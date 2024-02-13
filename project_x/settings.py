@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o0hkfl-k5u0pjl1(+s*@m4&fscky1)b1j@_%@y8ibp7hb((1_p'
+SECRET_KEY = config("SECRETKEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -166,11 +166,11 @@ SITE_ID = 1
 EMAIL_HOST = config("EMAIL_HOST", default='smtp.ionos.de')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'info@mint-easy.de'
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default='test')
 # Default sender address for emails
-DEFAULT_FROM_EMAIL = 'info@mint-easy.de'
-SERVER_EMAIL = 'info@mint-easy.de'
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+SERVER_EMAIL = config("SERVER_EMAIL")
 
 # to add the frontend url to the CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [
