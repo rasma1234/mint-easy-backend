@@ -167,11 +167,11 @@ SITE_ID = 1
 EMAIL_HOST = config("EMAIL_HOST", default='smtp.ionos.de')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default='test@test.de')
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default='test')
 # Default sender address for emails
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
-SERVER_EMAIL = config("SERVER_EMAIL")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default='test@test.de')
+SERVER_EMAIL = config("SERVER_EMAIL", default='test@test.de')
 
 # to add the frontend url to the CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [
